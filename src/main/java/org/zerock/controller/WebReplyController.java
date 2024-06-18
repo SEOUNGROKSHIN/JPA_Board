@@ -23,7 +23,7 @@ public class WebReplyController {
     @Transactional
     @PostMapping("/{bno}")
     public ResponseEntity<WebReply> addReply(
-            @PathVariable("bno")Long bno,
+            @PathVariable("bno") Long bno,
             @RequestBody WebReply reply) {
 
         log.info("addReply.....................");
@@ -48,8 +48,8 @@ public class WebReplyController {
     @Transactional
     @DeleteMapping("/{bno}/{rno}")
     public ResponseEntity<List<WebReply>> remove(
-            @PathVariable("bno")Long bno,
-            @PathVariable("rno")Long rno) {
+            @PathVariable("bno") Long bno,
+            @PathVariable("rno") Long rno) {
 
         log.info("delete reply : " + rno);
 
@@ -58,6 +58,37 @@ public class WebReplyController {
         WebBoard board = new WebBoard();
         board.setBno(bno);
 
+        return new ResponseEntity<>(getListByBoard(board), HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/{bno}")
+    public ResponseEntity<List<WebReply>> modify(@PathVariable("bno") Long bno,
+                                                 @RequestBody WebReply reply) {
+
+        log.info("modify....................." + reply);
+
+        replyRepo.findById(reply.getRno()).ifPresent(origin -> {
+
+            origin.setReplyText(reply.getReplyText());
+
+            replyRepo.save(origin);
+        });
+
+        WebBoard board = new WebBoard();
+        board.setBno(bno);
+
+        return new ResponseEntity<>(getListByBoard(board), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<WebReply>> getReplies(
+            @PathVariable("bno") Long bno) {
+
+        log.info("get All Replies...............");
+
+        WebBoard board = new WebBoard();
+        board.setBno(bno);
         return new ResponseEntity<>(getListByBoard(board), HttpStatus.OK);
     }
 }
