@@ -81,7 +81,7 @@ public class WebReplyController {
         return new ResponseEntity<>(getListByBoard(board), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/{bno}")
     public ResponseEntity<List<WebReply>> getReplies(
             @PathVariable("bno") Long bno) {
 

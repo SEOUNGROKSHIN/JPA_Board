@@ -80,6 +80,8 @@
             <artifactId>querydsl-core</artifactId>
             <version>5.0.0</version>
         </dependency>
+
+
     </dependencies>
 
     <build>
